@@ -1,0 +1,42 @@
+body {
+    background-color: rgb(255, 203, 92);
+    font-family: "Latin Modern Roman 10";
+    font-style: oblique;
+}
+.a {
+    font-size: small;
+    color: black;
+}
+.ing {
+    display: flex;
+    flex-flow: column wrap;
+    margin: 2% 2% 2% 2%;
+}
+.cent {
+    width: fit-content;
+    margin: 3% 10% 0% 10%;
+    height: max-content;
+}
+.borde {
+    border-color: rgb(255, 110, 84);
+    border-style: groove;
+    width: fit-content;
+    border-width: 15px;
+}
+.tarj {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    margin-bottom: 2%;
+}
+.imag {
+    height: 275px;
+    width: 295px;
+    border-color: rgb(255, 110, 84);
+    border-style: groove;
+    border-width: 12px;
+    margin-top: 2%;
+}
+.hist {
+    width: fit-content;
+}
