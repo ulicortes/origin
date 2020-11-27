@@ -40,3 +40,8 @@ body {
 .hist {
     width: fit-content;
 }
+
+.borders {
+    border-color: black;
+    border-style: solid;
+}
