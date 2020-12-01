@@ -44,4 +44,43 @@ body {
 .borders {
     border-color: black;
     border-style: solid;
+    text-align: center;
+    margin: 1px;
+}
+.hide {
+    display: none;
+}
+.btn {
+    background-color:gainsboro;
+    font-size: small;
+    width: fit-content;
+    border-style: groove;
+    border-color: rgb(206, 209, 13);
+    margin-left: 2px;
+    padding: 0.5px;
+}
+#tabla {
+    background-color: lightblue;
+    margin: auto;
+}
+.medio {
+    margin: auto;
+    width: fit-content;
+}
+.m {
+    background: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}
+.mem {
+    padding-top: 35vh;
+}
+.med {
+    height: fit-content;
 }
