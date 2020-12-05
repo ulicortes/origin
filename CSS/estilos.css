@@ -46,6 +46,7 @@ body {
     border-style: solid;
     text-align: center;
     margin: 1px;
+    background-color: rgb(238, 238, 238);
 }
 .hide {
     display: none;
@@ -62,6 +63,7 @@ body {
 #tabla {
     background-color: lightblue;
     margin: auto;
+    padding-top: 10px;
 }
 .medio {
     margin: auto;
@@ -82,5 +84,8 @@ body {
     padding-top: 35vh;
 }
 .med {
+    width: fit-content;
     height: fit-content;
+    margin: 5px;
+
 }

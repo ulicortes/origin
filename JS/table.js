@@ -1,3 +1,4 @@
+// HEADER
 let header = (llaves) => {
     let acc = "accion";
     llaves.push(acc)
@@ -12,14 +13,17 @@ let header = (llaves) => {
     theadEl.appendChild(trEl);
     tablaEl.appendChild(theadEl);
 };
+// CREACION DE LAS FILAS DE LA TABLA ORIGINAL
 let filas = (elementos) => {
     let trEl = document.createElement('tr');
     let btn1 = document.createElement('button');
     let btn2 = document.createElement('button');
+
     btn1.innerText = "Editar";
     btn2.innerText = "Eliminar";
     btn1.classList.add("med");
     btn2.classList.add("med");
+
     for (i in elementos) {
         let tdEl = document.createElement('input');
         let j = document.createElement('td');
@@ -31,33 +35,76 @@ let filas = (elementos) => {
         trEl.appendChild(btn1);
         trEl.appendChild(btn2);
         
-        btn1.addEventListener('click', () => {
-            trEl.classList.toggle("m");
-            trEl.classList.toggle("mem");
-            if (tdEl.readOnly == true) {
-                tdEl.readOnly = false;
-                btn1.innerText = "Listo";
-            } else if (tdEl.readOnly == false) {
+        let ifUno = () => {
+            trEl.classList.add("m");
+            trEl.classList.add("mem");
+            tdEl.readOnly = false;
+            btn1.innerText = "Listo";
+        }
+        let ifDos = () => {
+            trEl.appendChild(loadDivGreen);
+            loadDivGreen.classList.remove("hide");
+            setTimeout(() => {
                 tdEl.readOnly = true;
                 btn1.innerText = "Editar";
-
+                loadDivGreen.classList.add("hide")
+                trEl.classList.remove("m");
+                trEl.classList.remove("mem");
+            }, 1000);
+        }
+        let listenBtn = () => {
+            trEl.remove();
+        }
+        btn1.addEventListener('click', () => {
+            if (tdEl.readOnly == true) {
+                ifUno();
+            } else if (tdEl.readOnly == false) {
+                ifDos();
             }
+        });
+        btn2.addEventListener('click', () => {
+            listenBtn();
         })
     }
-    btn2.addEventListener('click', () => {
-        console.log("Boton eliminar");
-        console.log(trEl.rowIndex);
-        tBody.removeChild(trEl);
-    })
     return trEl
 }
-
+// HAGO EL TOGGLE
+let switchBtn = () => {
+    let div = document.createElement('div');
+    div.classList.add("custom-control");
+    div.classList.add("custom-switch");
+    let inpu = document.createElement('input');
+    inpu.type = "checkbox";
+    inpu.classList.add("custom-control-input");
+    inpu.setAttribute("id", "customSwitch1");
+    let lab = document.createElement('label');
+    lab.innerText = "Mostrar/ocultar filtro"
+    lab.setAttribute("for", "customSwitch1");
+    lab.classList.add("custom-control-label");
+    div.appendChild(inpu);
+    div.appendChild(lab);
+    div.addEventListener('change', () =>{
+        drop.classList.toggle("hide");
+    })
+    return div
+}
+// SE ANCLAN LAS FILAS AL BODY DE LA TABLA
 let cuerpo = (elementos) => {
     for (let i = 0; i < elementos.length; i++) {
         tBody.appendChild(filas(elementos[i]));
+        tBody1.appendChild(filas(tDpFilter[i]));
+        tBody2.appendChild(filas(cDiFilter[i]));
     }
     tablaEl.appendChild(tBody);
+    tablaEl.appendChild(tBody1);
+    tablaEl.appendChild(tBody2);
+    tablaEl.appendChild(drop);
+    tablaEl.appendChild(switchBtn());
     tablaEl.classList.add("hide");
+    drop.classList.add("hide");
+    tBody1.classList.add("hide");
+    tBody2.classList.add("hide");
+    
 };
 // GENERACION DE BOTONES MOSTRAR/OCULTAR TABLA Y AGREGAR
 let botton = () => {
@@ -88,22 +135,39 @@ let single = () => {
         trEl.appendChild(j);
         trEl.appendChild(btn1);
         trEl.appendChild(btn2);        
-        btn1.addEventListener('click', () => {
-            trEl.classList.toggle("m");
-            trEl.classList.toggle("mem");
-            if (tdEl.readOnly == true) {
-                tdEl.readOnly = false;
-                btn1.innerText = "Listo";
-            } else if (tdEl.readOnly == false) {
+        
+        let ifUno = () => {
+            trEl.classList.add("m");
+            trEl.classList.add("mem");
+            tdEl.readOnly = false;
+            btn1.innerText = "Listo";
+        }
+        let ifDos = () => {
+            trEl.appendChild(loadDivGreen);
+            loadDivGreen.classList.remove("hide");
+            setTimeout(() => {
                 tdEl.readOnly = true;
                 btn1.innerText = "Editar";
+                loadDivGreen.classList.add("hide")
+                trEl.classList.remove("m");
+                trEl.classList.remove("mem");
+            }, 1000);
+        }
+        let listenBtn = () => {
+            console.log("Boton eliminar");
+            trEl.remove();
+        }
+        btn1.addEventListener('click', () => {
+            if (tdEl.readOnly == true) {
+                ifUno();
+            } else if (tdEl.readOnly == false) {
+                ifDos();
             }
+        });
+        btn2.addEventListener('click', () => {
+            listenBtn();
         })
     }
-    btn2.addEventListener('click', () => {
-        console.log(trEl.rowIndex);
-        tBody.removeChild(trEl);
-    })
     return trEl;
 }
 // MODAL QUE APARECE CUANDO PULSO EL BOTON "AGREGAR"
@@ -121,26 +185,64 @@ let spam = () => {
     modalDiv.appendChild(modalDivEl);
     modalDivEl.classList.add("medio");
 }
-// ASIGNACION DE VALORES A LOS INPUTS, PEGADO DE LA NUEVA FILA AL BODY Y PUESTA DE CLASES
-let agregEventTasks = () => {
+// SE MUESTRA EN LA TABLA LA FILA AGREGADA Y SE VUELVEN LOS VALORES DE INPUTS A NULOS
+let agregEvent = () => {
     arrayInput[0] = inpuPostre.value;   
     arrayInput[1] = inpuTdp.value;   
     arrayInput[2] = inpuCdi.value;
-    tBody.appendChild(single(arrayInput));
-    modalDiv.classList.add("hide");
-    modalDiv.classList.remove("m");
+    loadDiv.classList.remove("hide");
 }
-// SE MUESTRA EN LA TABLA LA FILA AGREGADA Y SE VUELVEN LOS VALORES DE INPUTS A NULOS
-let agregEvent = () => {
-    agregEventTasks();
-    inpuPostre.value = "";
-    inpuTdp.value = "";
-    inpuCdi.value = "";
+// LOADER PARA AGREGAR ELEMENTOS
+let timeOut = () => {
+    setTimeout(() => {
+        modalDiv.classList.add("hide");
+        modalDiv.classList.remove("m");
+        loadDiv.classList.add("hide");
+        inpuPostre.value = "";
+        inpuTdp.value = "";
+       inpuCdi.value = "";
+        tBody.appendChild(single(arrayInput));
+    }, 1000);
 }
 // SE MANIPULA LAS CLASES DEL DIV PARA QUE EL MODAL QUEDE VISIBLE
 let eventAdd = () => {
     modalDiv.classList.remove("hide");
     modalDiv.classList.add("m");
+}
+// LOGICA DE EL BOTON MOSTRAR/OCULTAR TABLA
+let btnShoW = () => {
+    btnAdd.classList.toggle("hide");
+    tablaEl.classList.toggle("hide");
+    carrousel.classList.toggle("hide");
+    if (btnShow.innerText === "Mostrar tabla") {
+        btnShow.innerText = "Ocultar tabla";
+    } else if (btnShow.innerText === "Ocultar tabla") {
+        btnShow.innerText = "Mostrar tabla"
+    }
+}
+// LOGICA DEL BOTON QUE FILTRA LAS FILAS
+let dropB = () => {
+    if (drop.value == "Sin filtro") {
+        tBody.classList.remove("hide");
+        tBody1.classList.add("hide");
+        tBody2.classList.add("hide");
+    } else if (drop.value == "Menor a 70 minutos") {
+        tBody1.classList.remove("hide");
+        tBody.classList.add("hide");
+        tBody2.classList.add("hide");
+    } else if (drop.value == "Mayor a 5 ingredientes") {
+        tBody2.classList.remove("hide");
+        tBody1.classList.add("hide");
+        tBody.classList.add("hide");
+    }
+}
+// LOGICA DEL BOTON CANCELAR
+let cancelBtn = () => {
+    modalDiv.classList.add("hide");
+    modalDiv.classList.remove("m");
+    inpuPostre.value = "";
+    inpuTdp.value = "";
+    inpuCdi.value= "";
 }
 // EVENTO WINDOW, CUANDO CARGA LA PAGINA
 window.addEventListener('load', () => {
@@ -150,14 +252,7 @@ window.addEventListener('load', () => {
 })
 // BOTON MOSTRAR/OCULTAR TABLA
 btnShow.addEventListener('click', () => {
-    btnAdd.classList.toggle("hide");
-    tablaEl.classList.toggle("hide");
-    carrousel.classList.toggle("hide");
-    if (btnShow.innerText === "Mostrar tabla") {
-        btnShow.innerText = "Ocultar tabla";
-    } else if (btnShow.innerText === "Ocultar tabla") {
-        btnShow.innerText = "Mostrar tabla"
-    }
+    btnShoW();
 })
 // BOTON AGREGAR
 btnAdd.addEventListener('click', () => {
@@ -167,97 +262,13 @@ btnAdd.addEventListener('click', () => {
 // BOTON QUE AGREGA LA FILA NUEVA A LA TABLA
 agreg.addEventListener('click', () => {
     agregEvent();
+    timeOut();    
 })
 // BOTON QUE CANCELA EL INPUT, VOLVIENDO A LA TABLA ORIGINAL
 cancelar.addEventListener('click', () => {
-    modalDiv.classList.add("hide");
-    modalDiv.classList.remove("m");
-    inpuPostre.value = "";
-    inpuTdp.value = "";
-    inpuCdi.value= "";
+    cancelBtn();
 })
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// MI IDEA ES HACER INPUTS EN CADA CELDA, PONERLES LOS VALORES Y DEJARLOS DESHABILITADOS
-// CUANDO TOQUE EDITAR SE VAN A HABILITAR Y LOS VOY A PODES MODIFICAR.
-
-
-// let single = () => {
-//     let trEl = document.createElement('tr');
-//     let j = document.createElement('td');
-//     let btn1 = document.createElement('button');
-//     let btn2 = document.createElement('button');
-
-//     btn1.innerText = "Editar";
-//     btn2.innerText = "Eliminar";
-
-//     // let tdPo = document.createElement('input');
-//     // let tdTi = document.createElement('input');
-//     // let tdCa = document.createElement('input');
-
-//     for (i in arrayInput) {
-//         let tdEl = document.createElement('input');
-//         let j = document.createElement('td');
-//         tdEl.value = arrayInput[i];
-//         tdEl.readOnly = "readonly"
-//         tdEl.classList.add("borders");
-//         j.appendChild(tdEl);
-//         trEl.appendChild(j);
-//         trEl.appendChild(btn1);
-//         trEl.appendChild(btn2);
-//     }
-
-//     // tdPo.innerHTML = arrayInput[0];
-//     // tdTi.innerHTML = arrayInput[1];
-//     // tdCa.innerHTML = arrayInput[2];
-
-//     // tdPo.classList.add("borders");
-//     // tdTi.classList.add("borders");
-//     // tdCa.classList.add("borders");
-
-//     // trEl.appendChild(tdPo); 
-//     // trEl.appendChild(tdTi); 
-//     // trEl.appendChild(tdCa); 
-//     trEl.appendChild(btn1);
-//     trEl.appendChild(btn2);
-//     btn1.addEventListener('click', () => {
-//         console.log("Boton editar");
-//         spam();
-//         eventAdd();
-
-//     })
-//     btn2.addEventListener('click', () => {
-//         console.log(trEl.rowIndex);
-//         tBody.removeChild(trEl);
-//     })
-//     return trEl;
-// }
-
-    // btn1.addEventListener('click', () => {
-    //     console.log("Boton editar");
-    //     console.log(trEl.rowIndex);
-    //     spamEdit();
-    //     eventAdd();
-    //     inpuPostre.value = elementos.postre;
-    //     inpuTdp.value = elementos.tiempoDePreparado;
-    //     inpuCdi.value= elementos.cantidadDeIngredientes;
-    // })
-
-    // MODAL QUE APARECE CUANDO PULSO EL BOTON "EDITAR"
-// let spamEdit = () => {
-//     inpuPostre.value = elementos.postre;
-//     inpuTdp.value = elementos.tiempoDePreparado;
-//     inpuCdi.value = elementos.cantidadDeIngredientes;
-//     editar.innerText = "Editar";
-//     cancelar.innerText = "Cancelar";
-//     modalEdit.appendChild(inpuPostre);
-//     modalEdit.appendChild(inpuTdp);
-//     modalEdit.appendChild(inpuCdi);
-//     modalEdit.appendChild(editar);
-//     modalEdit.appendChild(cancelar);
-//     modalDiv.appendChild(modalEdit);
-//     modalDiv.classList.add("hide");
-//     modalEdit.classList.add("medio");
-// }
+// BOTON QUE FILTRA LAS FILAS
+drop.addEventListener('change', () => {
+    dropB();
+})
