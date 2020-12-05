@@ -13,7 +13,6 @@ let llaves = Object.keys(dPro.postres[0]);
 let tablaEl = document.getElementById("tabla");
 let modalDiv = document.getElementById('div');
 let modalDivEl = document.createElement('div');
-let modalEdit = document.createElement('div');
 let elementos = dPro.postres;
 
 let carrousel = document.getElementById("carouselExampleControls");
@@ -30,7 +29,11 @@ let inpuTdp = document.createElement('input');
 let inpuCdi = document.createElement('input'); 
 
 let arrayInput = [];
-// console.log(postre);
-let tBody = document.createElement('tbody');
 
-let jojo = document.createElement('input');
+let tBody = document.createElement('tbody');
+let tBody1 = document.createElement('tbody');
+let tBody2 = document.createElement('tbody');
+
+
+let cDiFilter = elementos.filter(elemento => elemento.cantidadDeIngredientes > 5);
+let tDpFilter = elementos.filter(elem => parseInt(elem.tiempoDePreparado) < parseInt("70 minutos"));
