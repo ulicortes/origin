@@ -45,7 +45,7 @@ body {
     border-color: black;
     border-style: solid;
     text-align: center;
-    margin: 1px;
+    margin: -1px;
     background-color: rgb(238, 238, 238);
 }
 .hide {
